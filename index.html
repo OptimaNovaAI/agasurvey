@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGA AI Readiness Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F1B2D; --navy-2:#1B2A4A; --purple:#7C3AED; --purple-lt:#A78BFA;
+  --blue:#2E75B6; --ink:#1A1A1A; --muted:#64748B; --line:#E2E8F0;
+  --bg:#F7F8FA; --white:#FFFFFF; --ok:#059669; --err:#DC2626;
+  --r:12px; --shadow:0 1px 3px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* progress */
+#bar{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--purple),var(--blue));z-index:99;transition:width .25s ease}
+
+/* header */
+.hero{background:var(--navy);color:#fff;padding:44px 24px 40px}
+.hero-in{max-width:720px;margin:0 auto}
+.brand{font-family:'Inter';font-size:19px;font-weight:700;letter-spacing:-.2px}
+.brand span{color:var(--purple-lt)}
+.kicker{font-size:10.5px;letter-spacing:2px;color:#93A5C4;margin-top:5px;text-transform:uppercase}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,38px);font-weight:700;line-height:1.2;margin:26px 0 10px}
+.hero p{color:#C3CEE0;font-size:15.5px;max-width:600px}
+
+/* intro card */
+.wrap{max-width:720px;margin:0 auto;padding:0 24px 80px}
+.intro{background:var(--white);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:28px 30px;margin-top:-22px;position:relative}
+.intro p{font-size:15px;color:#33405A;margin-bottom:13px}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--navy)}
+.privacy{border-left:3px solid var(--purple);background:#FAF7FF;border-radius:0 8px 8px 0;padding:15px 18px;margin:16px 0 4px}
+.privacy p{font-size:14.5px;color:#3B3355;margin-bottom:8px}
+.privacy p:last-child{margin-bottom:0}
+.meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.meta div{font-size:12.5px;color:var(--muted)}
+.meta b{display:block;color:var(--navy);font-size:13px;font-weight:600}
+
+/* sections */
+.sec{margin-top:30px}
+.sec-h{display:flex;align-items:baseline;gap:11px;margin-bottom:6px;padding:0 2px}
+.sec-n{font-size:10.5px;font-weight:700;letter-spacing:1.6px;color:var(--purple);text-transform:uppercase}
+.sec-t{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:var(--navy)}
+.sec-d{font-size:13.5px;color:var(--muted);margin:0 2px 14px;padding-left:2px}
+
+/* question card */
+.q{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;margin-bottom:13px;transition:border-color .18s,box-shadow .18s}
+.q:focus-within{border-color:var(--purple-lt);box-shadow:0 0 0 3px rgba(124,58,237,.07)}
+.q.bad{border-color:var(--err);box-shadow:0 0 0 3px rgba(220,38,38,.06)}
+.q-l{display:block;font-size:15.5px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.q-l .num{color:var(--purple);font-weight:700;margin-right:7px}
+.q-l .opt{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.q-help{font-size:13.5px;color:var(--muted);margin-bottom:13px;line-height:1.55}
+.q-help.note{background:#F5F8FC;border-radius:7px;padding:10px 13px;color:#42536E;margin-top:9px}
+.err{display:none;font-size:12.5px;color:var(--err);font-weight:500;margin-top:9px}
+.q.bad .err{display:block}
+
+/* inputs */
+input[type=text],textarea{width:100%;font-family:inherit;font-size:15px;color:var(--ink);background:#FCFDFE;border:1px solid var(--line);border-radius:8px;padding:11px 13px;transition:border-color .15s,background .15s}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--purple);background:#fff}
+textarea{resize:vertical;min-height:78px;line-height:1.55}
+
+/* choices */
+.opts{display:flex;flex-direction:column;gap:7px;margin-top:11px}
+.opt-row{display:flex;align-items:flex-start;gap:11px;padding:10px 13px;border:1px solid var(--line);border-radius:9px;cursor:pointer;background:#FCFDFE;transition:all .15s;font-size:14.5px;color:#2A3549}
+.opt-row:hover{border-color:#C7B4F5;background:#FCFAFF}
+.opt-row input{margin-top:3px;accent-color:var(--purple);width:16px;height:16px;flex-shrink:0;cursor:pointer}
+.opt-row.on{border-color:var(--purple);background:#FAF6FF;color:var(--navy);font-weight:500}
+.opt-row span{flex:1}
+.write-in{margin-top:9px;display:none}
+.write-in.show{display:block}
+
+/* scale */
+.scale{display:flex;flex-direction:column;gap:7px;margin-top:11px}
+.scale .opt-row .n{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:6px;background:#EEF1F6;color:var(--navy);font-size:12.5px;font-weight:700;flex-shrink:0}
+.scale .opt-row.on .n{background:var(--purple);color:#fff}
+
+/* conditional */
+.cond{display:none;margin-top:13px;padding-top:14px;border-top:1px dashed var(--line)}
+.cond.show{display:block}
+.cond label{display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:8px}
+
+/* submit */
+.foot{margin-top:30px;background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:26px;text-align:center}
+button{font-family:inherit;font-size:15.5px;font-weight:600;color:#fff;background:var(--navy);border:none;border-radius:9px;padding:14px 40px;cursor:pointer;transition:background .18s,transform .12s;width:100%;max-width:300px}
+button:hover:not(:disabled){background:var(--purple)}
+button:active:not(:disabled){transform:translateY(1px)}
+button:disabled{opacity:.55;cursor:not-allowed}
+.foot-note{font-size:12.5px;color:var(--muted);margin-top:13px}
+#formErr{display:none;background:#FEF2F2;border:1px solid #FCA5A5;color:#991B1B;border-radius:8px;padding:11px 14px;font-size:14px;margin-bottom:16px;text-align:left}
+#formErr.show{display:block}
+
+/* done */
+#done{display:none;text-align:center;padding:70px 24px}
+#done.show{display:block}
+.check{width:60px;height:60px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 22px}
+#done h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--navy);margin-bottom:11px}
+#done p{color:var(--muted);font-size:15.5px;max-width:440px;margin:0 auto 10px}
+
+/* sitefoot */
+.sf{text-align:center;padding:26px 24px 40px;font-size:12px;color:#94A3B8}
+.sf b{color:var(--navy-2);font-weight:600}
+
+@media(max-width:640px){
+  .hero{padding:34px 20px 34px}
+  .wrap{padding:0 16px 60px}
+  .intro{padding:22px 20px}
+  .q{padding:19px 17px}
+  button{max-width:100%}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<div id="main">
+  <header class="hero">
+    <div class="hero-in">
+      <div class="brand">American Gas <span>Association</span></div>
+      <div class="kicker">AI Readiness Survey</div>
+      <h1>Where are you on your AI journey?</h1>
+      <p>A short survey to help us build training that fits the way you actually work.</p>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="intro">
+      <p>This survey is administered by <strong>OptimaNova AI</strong>, an outside partner AGA is working with to evaluate and strengthen our AI readiness. It helps us understand where everyone at AGA stands today.</p>
+      <p>It takes about <strong>five minutes</strong>. There are no right or wrong answers, and there is no expectation that you already know anything about AI. If you have never used it, that is genuinely useful information. If you use it every day, that is useful too.</p>
+      <div class="privacy">
+        <p><strong>Your responses are confidential.</strong> Your individual answers are seen only by a small project team at OptimaNova and AGA. They are never shared with your manager and are never used for disciplinary purposes. Results are reported to leadership in summary form, grouped by department.</p>
+        <p>If you are already using an AI tool that helps you do your job, please say so. We would rather know what is working for you than have you leave it out.</p>
+      </div>
+      <p style="margin-top:16px">What we learn here shapes the training sessions in August and September, so the more honest you are, the more useful those sessions will be for you.</p>
+      <div class="meta">
+        <div><b>14 questions</b>Most are one click</div>
+        <div><b>~5 minutes</b>Start to finish</div>
+        <div><b>Confidential</b>Not shared with managers</div>
+      </div>
+    </div>
+
+    <form id="f" novalidate>
+
+      <!-- SECTION 1 -->
+      <div class="sec">
+        <div class="sec-h"><span class="sec-n">Section 1</span><span class="sec-t">About You</span></div>
+        <p class="sec-d">Three quick questions so we can look at results by team.</p>
+
+        <div class="q" data-q="q1">
+          <label class="q-l" for="q1"><span class="num">1</span>Your name</label>
+          <input type="text" id="q1" name="q1" autocomplete="name" placeholder="First and last name">
+          <div class="err">Please enter your name.</div>
+        </div>
+
+        <div class="q" data-q="q2">
+          <label class="q-l"><span class="num">2</span>Which team or department do you work in?</label>
+          <div class="opts" data-type="radio" data-name="q2">
+            <label class="opt-row"><input type="radio" name="q2" value="Advocacy &amp; Outreach"><span>Advocacy &amp; Outreach</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Communications"><span>Communications</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Energy Markets, Analysis &amp; Standards"><span>Energy Markets, Analysis &amp; Standards</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Finance &amp; Accounting"><span>Finance &amp; Accounting</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="General Counsel"><span>General Counsel</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Governmental Affairs &amp; Public Policy"><span>Governmental Affairs &amp; Public Policy</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Membership &amp; Strategic Development"><span>Membership &amp; Strategic Development</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="President's Office"><span>President's Office</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Safety, Operations &amp; Engineering"><span>Safety, Operations &amp; Engineering</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Security &amp; Preparedness"><span>Security &amp; Preparedness</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="Talent Operations"><span>Talent Operations</span></label>
+            <label class="opt-row"><input type="radio" name="q2" value="I work across multiple teams"><span>I work across multiple teams</span></label>
+          </div>
+          <div class="err">Please select one.</div>
+        </div>
+
+        <div class="q" data-q="q3">
+          <label class="q-l"><span class="num">3</span>Where do you usually work?</label>
+          <div class="opts" data-type="radio" data-name="q3">
+            <label class="opt-row"><input type="radio" name="q3" value="Mostly in the office"><span>Mostly in the office</span></label>
+            <label class="opt-row"><input type="radio" name="q3" value="Hybrid, some days in and some days remote"><span>Hybrid, some days in and some days remote</span></label>
+            <label class="opt-row"><input type="radio" name="q3" value="Fully remote (not a DC-based employee)"><span>Fully remote (not a DC-based employee)</span></label>
+          </div>
+          <div class="err">Please select one.</div>
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="sec">
+        <div class="sec-h"><span class="sec-n">Section 2</span><span class="sec-t">Where You Are Today</span></div>
+
+        <div class="q" data-q="q4">
+          <label class="q-l"><span class="num">4</span>How often do you currently use any AI tool for work?</label>
+          <div class="opts" data-type="radio" data-name="q4">
+            <label class="opt-row"><input type="radio" name="q4" value="Daily"><span>Daily</span></label>
+            <label class="opt-row"><input type="radio" name="q4" value="A few times a week"><span>A few times a week</span></label>
+            <label class="opt-row"><input type="radio" name="q4" value="A few times a month"><span>A few times a month</span></label>
+            <label class="opt-row"><input type="radio" name="q4" value="I have tried it once or twice"><span>I have tried it once or twice</span></label>
+            <label class="opt-row"><input type="radio" name="q4" value="Never"><span>Never</span></label>
+          </div>
+          <div class="err">Please select one.</div>
+        </div>
+
+        <div class="q" data-q="q5">
+          <label class="q-l"><span class="num">5</span>Which of these have you used for work in the last three months?<span class="opt">Select all that apply</span></label>
+          <p class="q-help">This question is about learning what helps people do their jobs, not about compliance. If something has been useful to you, we want to know about it.</p>
+          <div class="opts" data-type="check" data-name="q5">
+            <label class="opt-row"><input type="checkbox" name="q5" value="Microsoft Copilot (included with AGA account)"><span>Microsoft Copilot (the version included with your AGA account)</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="Microsoft Copilot (paid upgrade)"><span>Microsoft Copilot (the paid upgrade, if you have it)</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="ChatGPT"><span>ChatGPT</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="Claude"><span>Claude</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="Google Gemini"><span>Google Gemini</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="AI notetaker (Otter, Fathom, Read.ai)"><span>An AI notetaker such as Otter, Fathom, or Read.ai</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="Grammarly or similar writing assistant"><span>Grammarly or a similar writing assistant</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="Canva or design tool with AI features"><span>Canva or another design tool with AI features</span></label>
+            <label class="opt-row"><input type="checkbox" name="q5" value="AI features in a research or data service"><span>AI features inside a research or data service we subscribe to</span></label>
+            <label class="opt-row" data-writein="q5_other"><input type="checkbox" name="q5" value="Something else"><span>Something else</span></label>
+            <label class="opt-row" data-exclusive="1"><input type="checkbox" name="q5" value="None of these"><span>None of these</span></label>
+          </div>
+          <div class="write-in" id="wi_q5_other"><input type="text" name="q5_other" placeholder="Which tool? (optional)"></div>
+          <div class="err">Please select at least one.</div>
+        </div>
+
+        <div class="q" data-q="q6">
+          <label class="q-l"><span class="num">6</span>How confident do you feel using AI tools at work?</label>
+          <div class="opts scale" data-type="radio" data-name="q6">
+            <label class="opt-row"><input type="radio" name="q6" value="1"><span class="n">1</span><span>Not at all confident, I would not know where to start</span></label>
+            <label class="opt-row"><input type="radio" name="q6" value="2"><span class="n">2</span><span>Slightly confident</span></label>
+            <label class="opt-row"><input type="radio" name="q6" value="3"><span class="n">3</span><span>Somewhat confident</span></label>
+            <label class="opt-row"><input type="radio" name="q6" value="4"><span class="n">4</span><span>Confident</span></label>
+            <label class="opt-row"><input type="radio" name="q6" value="5"><span class="n">5</span><span>Very confident, I use it comfortably and regularly</span></label>
+          </div>
+          <div class="err">Please select one.</div>
+        </div>
+
+        <div class="q" data-q="q7">
+          <label class="q-l"><span class="num">7</span>Has AI ever saved you meaningful time on a work task?</label>
+          <div class="opts" data-type="radio" data-name="q7">
+            <label class="opt-row" data-cond="q7yes"><input type="radio" name="q7" value="Yes"><span>Yes</span></label>
+            <label class="opt-row"><input type="radio" name="q7" value="No"><span>No</span></label>
+            <label class="opt-row"><input type="radio" name="q7" value="I am not sure"><span>I am not sure</span></label>
+          </div>
+          <div class="cond" id="cond_q7yes">
+            <label for="q7_detail">What was it?</label>
+            <textarea id="q7_detail" name="q7_detail" placeholder="A sentence or two is plenty. These become real examples in the training."></textarea>
+          </div>
+          <div class="err">Please select one.</div>
+        </div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="sec">
+        <div class="sec-h"><span class="sec-n">Section 3</span><span class="sec-t">How You Actually Work</span></div>
+        <p class="sec-d">These three shape the use cases we build the training around. Short answers are fine.</p>
+
+        <div class="q" data-q="q8">
+          <label class="q-l" for="q8"><span class="num">8</span>In a typical week, which task takes you the most time?</label>
+          <textarea id="q8" name="q8" placeholder="For example: writing reports, pulling data, scheduling, reviewing documents"></textarea>
+          <div class="err">Please answer this one.</div>
+        </div>
+
+        <div class="q" data-q="q9">
+          <label class="q-l" for="q9"><span class="num">9</span>Which part of your work do you find most tedious or repetitive?</label>
+          <textarea id="q9" name="q9" placeholder="The part you would hand off tomorrow if you could"></textarea>
+          <div class="err">Please answer this one.</div>
+        </div>
+
+        <div class="q" data-q="q10">
+          <label class="q-l" for="q10"><span class="num">10</span>Which parts of your work should stay human, no matter how good the technology gets?</label>
+          <textarea id="q10" name="q10" placeholder="Judgment, relationships, anything you would not want automated"></textarea>
+          <div class="err">Please answer this one.</div>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="sec">
+        <div class="sec-h"><span class="sec-n">Section 4</span><span class="sec-t">How You Feel About It</span></div>
+
+        <div class="q" data-q="q11">
+          <label class="q-l"><span class="num">11</span>When you think about AI at AGA, which is closest to your reaction?</label>
+          <div class="opts" data-type="radio" data-name="q11">
+            <label class="opt-row"><input type="radio" name="q11" value="Excited, I want to do more with it"><span>Excited, I want to do more with it</span></label>
+            <label class="opt-row"><input type="radio" name="q11" value="Curious, but I do not know much yet"><span>Curious, but I do not know much yet</span></label>
+            <label class="opt-row"><input type="radio" name="q11" value="Neutral"><span>Neutral</span></label>
+            <label class="opt-row"><input type="radio" name="q11" value="Cautious, I have some reservations"><span>Cautious, I have some reservations</span></label>
+            <label class="opt-row"><input type="radio" name="q11" value="Concerned"><span>Concerned</span></label>
+          </div>
+          <div class="err">Please select one.</div>
+        </div>
+
+        <div class="q" data-q="q12">
+          <label class="q-l"><span class="num">12</span>What concerns you most, if anything?<span class="opt">Select all that apply</span></label>
+          <div class="opts" data-type="check" data-name="q12">
+            <label class="opt-row"><input type="checkbox" name="q12" value="Data security or confidentiality"><span>Data security or confidentiality</span></label>
+            <label class="opt-row"><input type="checkbox" name="q12" value="Accuracy, not knowing when to trust output"><span>Accuracy, and not knowing when to trust the output</span></label>
+            <label class="opt-row"><input type="checkbox" name="q12" value="Not knowing what is allowed"><span>Not knowing what is allowed and what is not</span></label>
+            <label class="opt-row"><input type="checkbox" name="q12" value="Not knowing where to start"><span>Not knowing where to start</span></label>
+            <label class="opt-row"><input type="checkbox" name="q12" value="Not having time to learn"><span>Not having time to learn something new</span></label>
+            <label class="opt-row"><input type="checkbox" name="q12" value="How it might change my role or job"><span>How it might change my role or my job</span></label>
+            <label class="opt-row"><input type="checkbox" name="q12" value="Quality of work, losing my own voice"><span>Quality of work, or losing my own voice in it</span></label>
+            <label class="opt-row" data-exclusive="1"><input type="checkbox" name="q12" value="Nothing in particular"><span>Nothing in particular</span></label>
+            <label class="opt-row" data-writein="q12_other"><input type="checkbox" name="q12" value="Something else"><span>Something else</span></label>
+          </div>
+          <div class="write-in" id="wi_q12_other"><input type="text" name="q12_other" placeholder="Tell us more (optional)"></div>
+          <div class="err">Please select at least one.</div>
+        </div>
+
+        <div class="q" data-q="q13">
+          <label class="q-l"><span class="num">13</span>What would help you most?<span class="opt">Select all that apply</span></label>
+          <div class="opts" data-type="check" data-name="q13">
+            <label class="opt-row"><input type="checkbox" name="q13" value="Hands-on practice with my own work"><span>Hands-on practice with my own actual work</span></label>
+            <label class="opt-row"><input type="checkbox" name="q13" value="Clear rules about what is allowed"><span>Clear rules about what is allowed</span></label>
+            <label class="opt-row"><input type="checkbox" name="q13" value="Examples from people who do a job like mine"><span>Examples from people who do a job like mine</span></label>
+            <label class="opt-row"><input type="checkbox" name="q13" value="Someone I can ask questions"><span>Someone I can ask questions without feeling silly</span></label>
+            <label class="opt-row"><input type="checkbox" name="q13" value="Dedicated time to experiment"><span>Dedicated time to experiment</span></label>
+            <label class="opt-row"><input type="checkbox" name="q13" value="A place to find approved tools and guidance"><span>A place to find approved tools and guidance</span></label>
+            <label class="opt-row" data-writein="q13_other"><input type="checkbox" name="q13" value="Something else"><span>Something else</span></label>
+          </div>
+          <div class="write-in" id="wi_q13_other"><input type="text" name="q13_other" placeholder="What would help? (optional)"></div>
+          <div class="err">Please select at least one.</div>
+        </div>
+
+        <div class="q" data-q="q14">
+          <label class="q-l" for="q14"><span class="num">14</span>Anything else you would like us to know before we build the training?<span class="opt">Optional</span></label>
+          <textarea id="q14" name="q14" placeholder="Anything at all"></textarea>
+        </div>
+      </div>
+
+      <div class="foot">
+        <div id="formErr"></div>
+        <button type="submit" id="btn">Submit my responses</button>
+        <p class="foot-note">You will not be able to edit after submitting.</p>
+      </div>
+    </form>
+  </div>
+
+  <div class="sf">
+    <p>Collected by <b>OptimaNova AI</b> on behalf of the American Gas Association.</p>
+    <p style="margin-top:5px">Responses are confidential, are not shared with your manager, and are not used for disciplinary purposes.</p>
+  </div>
+</div>
+
+<div id="done">
+  <div class="check">&#10003;</div>
+  <h2>Thank you.</h2>
+  <p>Your responses are in, and they genuinely shape what the August and September sessions cover.</p>
+  <p style="color:#94A3B8;font-size:14px;margin-top:18px">You can close this window.</p>
+</div>
+
+<script>
+// ---- Backend: Supabase (Nova-AIS-Suite). Insert-only anon key. ----
+const SB_URL = "https://ttwogroespltctnpjlrr.supabase.co/rest/v1/aga_survey_responses";
+const SB_KEY = "sb_publishable_oMeVFE9jVK7nUtGI2XJVGw_EBC_PcSz";
+
+const REQUIRED = ["q1","q2","q3","q4","q5","q6","q7","q8","q9","q10","q11","q12","q13"];
+const f = document.getElementById('f');
+const btn = document.getElementById('btn');
+const formErr = document.getElementById('formErr');
+
+// selected-state styling + write-ins + conditionals + exclusives
+document.querySelectorAll('.opt-row input').forEach(inp=>{
+  inp.addEventListener('change',()=>{
+    const grp = inp.closest('.opts');
+    const row = inp.closest('.opt-row');
+    if(inp.type==='radio'){
+      grp.querySelectorAll('.opt-row').forEach(r=>r.classList.remove('on'));
+      row.classList.add('on');
+      // conditionals
+      grp.querySelectorAll('.opt-row').forEach(r=>{
+        const c = r.dataset.cond;
+        if(c){ document.getElementById('cond_'+c).classList.toggle('show', r===row && inp.checked); }
+      });
+    } else {
+      // exclusive handling
+      if(row.dataset.exclusive && inp.checked){
+        grp.querySelectorAll('input').forEach(o=>{ if(o!==inp){o.checked=false;o.closest('.opt-row').classList.remove('on');} });
+        grp.querySelectorAll('.opt-row[data-writein]').forEach(r=>{
+          document.getElementById('wi_'+r.dataset.writein).classList.remove('show');
+        });
+      } else if(inp.checked){
+        grp.querySelectorAll('.opt-row[data-exclusive]').forEach(r=>{
+          const ex=r.querySelector('input'); if(ex.checked){ex.checked=false;r.classList.remove('on');}
+        });
+      }
+      row.classList.toggle('on', inp.checked);
+      if(row.dataset.writein){
+        document.getElementById('wi_'+row.dataset.writein).classList.toggle('show', inp.checked);
+      }
+    }
+    clearErr(inp.closest('.q'));
+    progress();
+  });
+});
+document.querySelectorAll('input[type=text],textarea').forEach(el=>{
+  el.addEventListener('input',()=>{ clearErr(el.closest('.q')); progress(); });
+});
+
+function clearErr(q){ if(q) q.classList.remove('bad'); }
+
+function progress(){
+  let done=0;
+  REQUIRED.forEach(n=>{ if(valOf(n).length) done++; });
+  document.getElementById('bar').style.width = Math.round(done/REQUIRED.length*100)+'%';
+}
+
+function valOf(name){
+  const els = f.querySelectorAll('[name="'+name+'"]');
+  if(!els.length) return [];
+  const t = els[0].type;
+  if(t==='radio'||t==='checkbox'){
+    return Array.from(els).filter(e=>e.checked).map(e=>e.value);
+  }
+  const v = els[0].value.trim();
+  return v ? [v] : [];
+}
+
+f.addEventListener('submit', async e=>{
+  e.preventDefault();
+  formErr.classList.remove('show');
+  let first=null, bad=0;
+  REQUIRED.forEach(n=>{
+    const q = f.querySelector('.q[data-q="'+n+'"]');
+    if(!valOf(n).length){ q.classList.add('bad'); bad++; if(!first) first=q; }
+    else q.classList.remove('bad');
+  });
+  if(bad){
+    formErr.textContent = bad===1 ? 'One question still needs an answer. It is highlighted below.'
+                                  : bad+' questions still need answers. They are highlighted below.';
+    formErr.classList.add('show');
+    first.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  const one = n => valOf(n).join('');
+  const many = n => valOf(n).join('; ');
+  const payload = {
+    submitted_at:       new Date().toISOString(),
+    name:               one('q1'),
+    department:         one('q2'),
+    work_location:      one('q3'),
+    ai_frequency:       one('q4'),
+    tools_used:         many('q5'),
+    tools_used_other:   one('q5_other'),
+    confidence:         one('q6'),
+    saved_time:         one('q7'),
+    saved_time_detail:  one('q7_detail'),
+    longest_task:       one('q8'),
+    most_tedious:       one('q9'),
+    stays_human:        one('q10'),
+    reaction:           one('q11'),
+    concerns:           many('q12'),
+    concerns_other:     one('q12_other'),
+    what_helps:         many('q13'),
+    what_helps_other:   one('q13_other'),
+    anything_else:      one('q14')
+  };
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try{
+    const res = await fetch(SB_URL, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Prefer':'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    document.getElementById('main').style.display='none';
+    document.getElementById('done').classList.add('show');
+    document.getElementById('bar').style.width='100%';
+    window.scrollTo(0,0);
+  }catch(err){
+    btn.disabled=false;
+    btn.textContent='Submit my responses';
+    formErr.textContent='Something went wrong sending your responses. Please try once more, and if it happens again email joepaul@optimanova.ai.';
+    formErr.classList.add('show');
+  }
+});
+
+progress();
+</script>
+</body>
+</html>
