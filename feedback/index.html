@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI at AGA | Session Feedback</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#1B2A4A;font-family:Calibri,Carlito,-apple-system,Segoe UI,Arial,sans-serif;font-size:17px;line-height:1.55}
+.wrap{max-width:660px;margin:0 auto;padding:34px 22px 90px}
+.brand{font-size:12px;letter-spacing:2.2px;color:#8A8A8A;margin:0 0 4px}
+.mark{color:#7C3AED;font-weight:700;font-size:18px;margin:0 0 26px}
+h1{font-size:31px;line-height:1.2;color:#0F1B2D;margin:0 0 12px}
+.lede{font-size:17px;color:#1B2A4A;margin:0 0 8px}
+.meta{font-size:14px;color:#8A8A8A;margin:0 0 30px}
+.q{border-top:1px solid #E4E9F5;padding:24px 0 6px}
+.q:first-of-type{border-top:none}
+label.lbl{display:block;font-weight:700;color:#0F1B2D;margin:0 0 4px;font-size:17px}
+.help{font-size:14px;color:#8A8A8A;margin:0 0 12px}
+input[type=text],textarea,select{width:100%;padding:11px 13px;border:1px solid #C9D3E8;border-radius:7px;font:inherit;font-size:16px;color:#1B2A4A;background:#fff}
+textarea{min-height:88px;resize:vertical}
+input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:#7C3AED;box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:8px 0;cursor:pointer}
+.opt input{margin-top:5px;accent-color:#7C3AED;width:17px;height:17px;flex:0 0 auto}
+.scwrap{display:flex;gap:8px;margin:6px 0 5px}
+.sc{flex:1;cursor:pointer;position:relative}
+.sc input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.sc span{display:block;text-align:center;padding:13px 0;border:1px solid #C9D3E8;border-radius:7px;font-weight:700;color:#1B2A4A;transition:.12s}
+.sc input:checked+span{background:#7C3AED;border-color:#7C3AED;color:#fff}
+.sc input:focus-visible+span{box-shadow:0 0 0 3px rgba(124,58,237,.25)}
+.sclab{display:flex;justify-content:space-between;font-size:13px;color:#8A8A8A}
+button{margin-top:32px;width:100%;padding:16px;background:#7C3AED;color:#fff;border:0;border-radius:8px;font:inherit;font-size:18px;font-weight:700;cursor:pointer}
+button:hover{background:#6a2fd0}
+button:disabled{opacity:.55;cursor:default}
+.note{border-left:3px solid #7C3AED;padding:2px 0 2px 14px;font-size:15px;color:#1B2A4A;margin:0 0 30px}
+.err{display:none;margin-top:14px;padding:12px 14px;border:1px solid #CA25B7;border-radius:7px;color:#CA25B7;font-size:15px}
+.done{text-align:center;padding:70px 0}
+.done h2{color:#0F1B2D;font-size:29px;margin:0 0 12px}
+.foot{margin-top:44px;font-size:13px;color:#8A8A8A;border-top:1px solid #E4E9F5;padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="brand">AI STRATEGY &nbsp;&bull;&nbsp; TRAINING &nbsp;&bull;&nbsp; GOVERNANCE</p>
+<p class="mark">OptimaNova AI</p>
+
+<div id="app">
+<h1>How did that session land?</h1>
+<p class="lede">Eleven questions. About three minutes. Your answers shape the next two sessions and what we cover in office hours.</p>
+<p class="meta">Confidential. Individual answers are never shared with managers and are never used for performance purposes.</p>
+<p class="note">Tell us what did not work. That is far more useful to us than what did.</p>
+
+<form id="f">
+
+<div class="q"><label class="lbl">Which session did you attend?</label>
+<label class="opt"><input type="radio" name="session_attended" value="August 19" required><span>August 19</span></label>
+<label class="opt"><input type="radio" name="session_attended" value="August 25" required><span>August 25</span></label>
+<label class="opt"><input type="radio" name="session_attended" value="September 10" required><span>September 10</span></label>
+</div>
+
+<div class="q"><label class="lbl">Before the session, how confident were you using AI in your job?</label>
+<p class="help">Same scale as the July survey. Think back to before the training.</p>
+<div class="scwrap">
+<label class="sc"><input type="radio" name="confidence_before" value="1" required><span>1</span></label>
+<label class="sc"><input type="radio" name="confidence_before" value="2" required><span>2</span></label>
+<label class="sc"><input type="radio" name="confidence_before" value="3" required><span>3</span></label>
+<label class="sc"><input type="radio" name="confidence_before" value="4" required><span>4</span></label>
+<label class="sc"><input type="radio" name="confidence_before" value="5" required><span>5</span></label>
+</div>
+<div class="sclab"><span>Not at all confident</span><span>Very confident</span></div>
+</div>
+
+<div class="q"><label class="lbl">And how confident are you now?</label>
+<div class="scwrap">
+<label class="sc"><input type="radio" name="confidence" value="1" required><span>1</span></label>
+<label class="sc"><input type="radio" name="confidence" value="2" required><span>2</span></label>
+<label class="sc"><input type="radio" name="confidence" value="3" required><span>3</span></label>
+<label class="sc"><input type="radio" name="confidence" value="4" required><span>4</span></label>
+<label class="sc"><input type="radio" name="confidence" value="5" required><span>5</span></label>
+</div>
+<div class="sclab"><span>Not at all confident</span><span>Very confident</span></div>
+</div>
+
+<div class="q"><label class="lbl">Have you used Copilot since the session?</label>
+<label class="opt"><input type="radio" name="used_since" value="Yes, already used it on real work" required><span>Yes, already used it on real work</span></label>
+<label class="opt"><input type="radio" name="used_since" value="Yes, but just experimenting" required><span>Yes, but just experimenting</span></label>
+<label class="opt"><input type="radio" name="used_since" value="Not yet, but I plan to this week" required><span>Not yet, but I plan to this week</span></label>
+<label class="opt"><input type="radio" name="used_since" value="Not yet" required><span>Not yet</span></label>
+</div>
+
+<div class="q"><label class="lbl">What was the most useful part?</label>
+<label class="opt"><input type="radio" name="most_useful" value="Introducing yourself to Copilot" required><span>Introducing yourself to Copilot</span></label>
+<label class="opt"><input type="radio" name="most_useful" value="Role, Context, Task, Constraints" required><span>Role, Context, Task, Constraints</span></label>
+<label class="opt"><input type="radio" name="most_useful" value="The live demo across Excel, Word, PowerPoint, Outlook" required><span>The live demo across Excel, Word, PowerPoint, Outlook</span></label>
+<label class="opt"><input type="radio" name="most_useful" value="The walk through the Copilot interface" required><span>The walk through the Copilot interface</span></label>
+<label class="opt"><input type="radio" name="most_useful" value="The hands-on practice time" required><span>The hands-on practice time</span></label>
+<label class="opt"><input type="radio" name="most_useful" value="The traffic light and the policy" required><span>The traffic light and the policy</span></label>
+<label class="opt"><input type="radio" name="most_useful" value="Hearing how colleagues are using it" required><span>Hearing how colleagues are using it</span></label>
+</div>
+
+<div class="q"><label class="lbl">The hands-on practice time was</label>
+<label class="opt"><input type="radio" name="practice_time" value="Too short, I needed more" required><span>Too short, I needed more</span></label>
+<label class="opt"><input type="radio" name="practice_time" value="About right" required><span>About right</span></label>
+<label class="opt"><input type="radio" name="practice_time" value="Too long" required><span>Too long</span></label>
+<label class="opt"><input type="radio" name="practice_time" value="I could not get to it" required><span>I could not get to it</span></label>
+</div>
+
+<div class="q"><label class="lbl">The pace was</label>
+<label class="opt"><input type="radio" name="pace" value="Too fast" required><span>Too fast</span></label>
+<label class="opt"><input type="radio" name="pace" value="About right" required><span>About right</span></label>
+<label class="opt"><input type="radio" name="pace" value="Too slow" required><span>Too slow</span></label>
+</div>
+
+<div class="q"><label class="lbl">What is one thing we should change for the next session?</label>
+<p class="help">Be blunt. This is the question we act on.</p>
+<textarea name="what_to_change"></textarea></div>
+
+<div class="q"><label class="lbl">What is still unclear or unanswered for you?</label>
+<textarea name="still_unclear"></textarea></div>
+
+<div class="q"><label class="lbl">What should we cover in office hours?</label>
+<p class="help">A topic, or the specific thing that is not working for you.</p>
+<textarea name="office_hours_topic"></textarea></div>
+
+<div class="q"><label class="lbl">Would you recommend this session to a colleague?</label>
+<label class="opt"><input type="radio" name="would_recommend" value="Yes" required><span>Yes</span></label>
+<label class="opt"><input type="radio" name="would_recommend" value="Maybe" required><span>Maybe</span></label>
+<label class="opt"><input type="radio" name="would_recommend" value="No" required><span>No</span></label>
+</div>
+
+<div class="q"><label class="lbl">Anything else?</label>
+<textarea name="anything_else"></textarea></div>
+
+<div class="q"><label class="lbl">Your department</label>
+<p class="help">Optional. Helps us see where support is needed.</p>
+<select name="department">
+<option value="">Prefer not to say</option>
+<option>Communications</option>
+<option>Energy Analysis / Energy Markets</option>
+<option>Executive Office</option>
+<option>Facilities / Workplace Services</option>
+<option>Finance and Accounting</option>
+<option>Government Relations</option>
+<option>Human Resources / Talent Operations</option>
+<option>Information Technology</option>
+<option>Legal / Office of General Counsel</option>
+<option>Meetings and Events</option>
+<option>Member Services</option>
+<option>Operations and Engineering</option>
+<option>Regulatory Affairs</option>
+<option>State Affairs</option>
+<option>Other</option>
+</select></div>
+
+<div class="q"><label class="lbl">Your name</label>
+<p class="help">Optional. Only add it if you would like us to connect this to your July responses or follow up with you directly.</p>
+<input type="text" name="name" autocomplete="off"></div>
+
+<button type="submit" id="b">Submit</button>
+<div class="err" id="e"></div>
+</form>
+<p class="foot">Collected by OptimaNova AI for the American Gas Association. Responses are stored confidentially and reported only in aggregate.</p>
+</div>
+</div>
+
+<script>
+var SB_URL = "https://ttwogroespltctnpjlrr.supabase.co/rest/v1/aga_post_training_responses";
+// Publishable key (current standard). Legacy anon JWT fallback is on the line below if needed.
+var SB_KEY = "sb_publishable_oMeVFE9jVK7nUtGI2XJVGw_EBC_PcSz";
+// var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0d29ncm9lc3BsdGN0bnBqbHJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MDkxOTMsImV4cCI6MjA5MTE4NTE5M30.isaFuFQsnfo57N9zjr5tA-1vkwnPIc5eE1nBUB-G6hw";
+
+var f = document.getElementById('f'), b = document.getElementById('b'), e = document.getElementById('e');
+
+f.addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  b.disabled = true; b.textContent = 'Sending...'; e.style.display = 'none';
+
+  var d = {};
+  new FormData(f).forEach(function (v, k) {
+    v = String(v).trim();
+    d[k] = v ? v.slice(0, 4000) : null;
+  });
+
+  fetch(SB_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(d)
+  })
+  .then(function (r) {
+    if (!r.ok) { return r.text().then(function (t) { throw new Error(t || 'save failed'); }); }
+    document.getElementById('app').innerHTML =
+      '<div class="done"><h2>Thank you.</h2>' +
+      '<p class="lede">That genuinely helps. We read every one of these before the next session.</p>' +
+      '<p class="meta">Office hours are every Thursday, 10:00 to 11:00. Bring the thing that did not work.</p></div>';
+    window.scrollTo(0, 0);
+  })
+  .catch(function (err) {
+    console.error(err);
+    b.disabled = false; b.textContent = 'Submit';
+    e.textContent = 'Something went wrong saving that. Please try once more, or email JoePaul@OptimaNova.ai.';
+    e.style.display = 'block';
+  });
+});
+</script>
+</body>
+</html>
